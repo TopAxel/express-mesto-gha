@@ -9,7 +9,6 @@ const cardSchema = new mongoose.Schema({
     maxlength: 30,
     validate: {
       validator: (value) => validator.isAlpha(value),
-      message: '',
     },
   },
   link: {
@@ -17,7 +16,6 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isUrl(value),
-      message: '',
     },
   },
   owner: {

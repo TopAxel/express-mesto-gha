@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     maxlength: 30,
     validate: {
       validator: (value) => validator.isAlpha(value),
-      message: '',
     },
   },
   about: {
@@ -19,7 +18,6 @@ const userSchema = new mongoose.Schema({
     maxlength: 30,
     validate: {
       validator: (value) => validator.isAlpha(value),
-      message: '',
     },
   },
   avatar: {
@@ -27,7 +25,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isURL(value),
-      message: '',
     },
   },
 });
