@@ -9,6 +9,7 @@ const cardSchema = new mongoose.Schema({
     maxlength: 30,
     validate: {
       validator: (value) => validator.isAlpha(value),
+      message: 'Некорректное имя карточки',
     },
   },
   link: {
@@ -16,16 +17,17 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isUrl(value),
+      message: 'Неверная ссылка',
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true,
   },
   likes: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'User',
+    ref: 'user',
     default: [],
   },
   createdAt: {

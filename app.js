@@ -2,8 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const users = require('./routes/users');
-const cards = require('./routes/cards');
+const router = require('./routes/index');
 
 const app = express();
 
@@ -22,8 +21,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 app.use(bodyParser.json());
 
 // роут
-app.use('/users', users);
-app.use('/cards', cards);
+app.use(router);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
