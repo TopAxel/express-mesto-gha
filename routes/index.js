@@ -1,17 +1,13 @@
 const express = require('express');
 
 const router = express.Router();
-
 const users = require('./users');
 const cards = require('./cards');
 
-const { NOT_FOUND } = require('../utils/constants');
+const NotFoundError = require('../errors/UnauthorizedError');
 
 router.use('/users', users);
 router.use('/cards', cards);
-router.use('*', (req, res, next) => {
-  res.status(NOT_FOUND).send({ message: 'страница не найдена' });
-  next();
-});
+router.use('*', (req, res, next) => next(new NotFoundError('страница не найдена')));
 
 module.exports = router;
