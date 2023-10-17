@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -20,8 +19,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 app.use(bodyParser.json());
 
 // роут
-app.post('/signin', validationLogin, login);
 app.post('/signup', validationCreateUser, createUser);
+app.post('/signin', validationLogin, login);
 
 app.use(auth);
 app.use(router);

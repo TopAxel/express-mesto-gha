@@ -33,10 +33,10 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Card.findByIdAndRemove(cardId).then(() => res.status(200).send(card));
-      } else {
-        throw new ForbiddenError('В доступе отказано');
+        return Card.deleteOne({ _id: cardId })
+          .then(() => res.status(OK).send(card));
       }
+      throw new ForbiddenError('В доступе отказано');
     })
     .catch(next);
 };
@@ -49,7 +49,7 @@ const likeCard = (req, res, next) => {
   ).orFail(() => {
     throw new NotFoundError('Передан несуществующий _id карточки.');
   })
-    .then((card) => res.status(200).send(card))
+    .then((card) => res.status(OK).send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные для постановки/снятии лайка.'));
@@ -69,7 +69,7 @@ const unlikeCard = (req, res, next) => {
   ).orFail(() => {
     throw new NotFoundError('Передан несуществующий _id карточки.');
   })
-    .then((card) => res.status(200).send(card))
+    .then((card) => res.status(OK).send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные для постановки/снятии лайка.'));
