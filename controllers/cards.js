@@ -28,18 +28,22 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
-  return Card.findById(cardId)
-    .orFail(() => {
-      throw new NotFoundError('Карточка с указанным _id не найдена.');
-    })
+  Card.findById(cardId)
     .then((card) => {
-      if (card.owner.toString() === req.user._id) {
+      if (!card) {
+        throw new NotFoundError('Карточка с указанным _id не найдена.');
+      } else if (card.owner.toString() !== req.user._id) {
+        throw new ForbiddenError('В доступе отказано');
+      } else {
         return Card.deleteOne({ _id: cardId })
-          .then(() => res.status(OK).send(card));
+          .then(() => {
+            res.status(OK).send(card);
+          });
       }
-      throw new ForbiddenError('В доступе отказано');
     })
-    .catch(next);
+    .catch((error) => {
+      next(error);
+    });
 };
 
 const likeCard = (req, res, next) => {
