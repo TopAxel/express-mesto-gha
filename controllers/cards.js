@@ -32,7 +32,7 @@ const deleteCard = (req, res, next) => {
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка с указанным _id не найдена.');
-      } else if (card.owner.toString() !== req.user._id) {
+      } else if (card.owner.toString() !== req.user._id.toString()) {
         throw new ForbiddenError('В доступе отказано');
       } else {
         return Card.deleteOne({ _id: cardId })
@@ -72,18 +72,17 @@ const unlikeCard = (req, res, next) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } },
     { new: true },
-  ).orFail(() => {
-    throw new NotFoundError('Передан несуществующий _id карточки.');
-  })
+  )
+    .orFail(() => {
+      throw new NotFoundError('Передан несуществующий _id карточки.');
+    })
     .then((card) => res.status(OK).send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные для постановки/снятии лайка.'));
+      } else {
+        next(err);
       }
-      if (err.message === 'NotFound') {
-        next(new NotFoundError('Передан несуществующий _id карточки.'));
-      }
-      next(err);
     });
 };
 
